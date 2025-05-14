@@ -17,3 +17,5 @@ def put_together():
             [all_ids.append(id_) for id_ in df['url']]
     all_ids = list(set(all_ids))
     pd.Series(all_ids).to_csv('data/all_ids.csv', index=False)
+
+
