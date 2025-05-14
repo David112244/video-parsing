@@ -210,7 +210,7 @@ def collect_recommendations():
         for path in glob(path_to_raw_rec):
             rec = pd.read_csv(path)
             if len(rec) < 100:  # брак
-                video_id = path.split('\\')[-1].split('.')[0]
+                video_id = path.split('/')[-1].split('.')[0]
                 print(video_id)
                 os.remove(path)
                 os.remove(f'data/raw_checked_ids/batch_{batch_num}/{video_id}.txt')
