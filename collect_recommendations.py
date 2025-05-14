@@ -157,6 +157,7 @@ def inner_function(pack):
     start_time = time()
     try:
         video_id, batch_num = pack
+        print(f'Обработка {video_id}')
         recommendations = get_related_videos_from_request(video_id)
         father_id = video_id
         first_r = recommendations[0]  # shape 10
