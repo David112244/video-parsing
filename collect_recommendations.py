@@ -154,6 +154,7 @@ def get_related_videos_from_request(id, depth=2, count_video=10):
 
 
 def inner_function(pack):
+    print('inner function')
     start_time = time()
     try:
         video_id, batch_num = pack
