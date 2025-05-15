@@ -207,9 +207,9 @@ def collect_recommendations():
         unchecked_ids = list(set(video_ids) - set(checked_ids))
         to_pool = [[un_id, batch_num] for un_id in unchecked_ids]
 
-        print('near pool')
+        print('near pool', len(to_pool))
         with Pool(processes=10) as pool:
-            pool.map(inner_function, to_pool[:])
+            pool.map(inner_function, to_pool[])
 
         for path in glob(path_to_raw_rec):
             rec = pd.read_csv(path)
