@@ -180,6 +180,7 @@ def inner_function(pack):
 
 
 def collect_recommendations():
+    print('collect rec')
     batch_count = 20
     for batch_num in range(batch_count):
         path_to_video_urls = f'data/video_urls/batch_{batch_num}.csv'
@@ -189,6 +190,7 @@ def collect_recommendations():
 
         video_urls = pd.read_csv(path_to_video_urls).iloc[:, 0]
         video_ids = [extract_video_id(url) for url in video_urls]
+        print(len(video_ids), video_ids)
         try:
             checked_ids = pd.read_csv(path_to_checked_ids).iloc[:, 0]
         except:
