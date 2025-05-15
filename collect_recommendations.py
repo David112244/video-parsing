@@ -190,7 +190,7 @@ def collect_recommendations():
 
         video_urls = pd.read_csv(path_to_video_urls).iloc[:, 0]
         video_ids = [extract_video_id(url) for url in video_urls]
-        print(len(video_ids), video_ids)
+        # print(len(video_ids), 'video_ids')
         try:
             checked_ids = pd.read_csv(path_to_checked_ids).iloc[:, 0]
         except:
@@ -207,6 +207,7 @@ def collect_recommendations():
         unchecked_ids = list(set(video_ids) - set(checked_ids))
         to_pool = [[un_id, batch_num] for un_id in unchecked_ids]
 
+        print('near pool')
         with Pool(processes=10) as pool:
             pool.map(inner_function, to_pool[:])
 
