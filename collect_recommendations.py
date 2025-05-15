@@ -209,7 +209,7 @@ def collect_recommendations():
 
         print('near pool', len(to_pool))
         with Pool(processes=10) as pool:
-            pool.map(inner_function, to_pool[])
+            pool.map(inner_function, to_pool)
 
         for path in glob(path_to_raw_rec):
             rec = pd.read_csv(path)
