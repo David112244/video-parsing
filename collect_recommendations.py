@@ -214,6 +214,7 @@ def collect_recommendations():
 
         print('near new pool')
         with Pool(processes=2) as pool:
+            print('in pool')
             result = []
             for item in to_pool:
                 print('|', end='')
