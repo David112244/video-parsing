@@ -216,7 +216,7 @@ def collect_recommendations():
         with Pool(processes=2) as pool:
             result = []
             for item in to_pool:
-                result.append(pool.apply_async(inner_function, item))
+                result.append(pool.apply_async(inner_function, (item, )))
             for res in result:
                 try:
                     res.get(timeout=30)
