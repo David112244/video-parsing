@@ -213,19 +213,23 @@ def collect_recommendations():
         #     pool.map(inner_function, to_pool)
 
         print('near new pool')
-        with Pool(processes=2) as pool:
-            print('in pool')
-            result = []
-            for item in to_pool:
-                print('|', end='')
-                result.append(pool.apply_async(inner_function, (item, )))
-            for res in result:
-                try:
-                    res.get(timeout=30)
-                except Exception as e:
-                    print(f'Error: {e}')
+        try:
+            with Pool(processes=2) as pool:
+                print('in pool')
+                result = []
+                for item in to_pool:
+                    print('|', end='')
+                    result.append(pool.apply_async(inner_function, (item, )))
+                for res in result:
+                    try:
+                        res.get(timeout=30)
+                    except Exception as e:
+                        print(f'Error: {e}')
+        except Exception as e:
+            print(e)
 
         for path in glob(path_to_raw_rec):
+            print('path')
             rec = pd.read_csv(path)
             if len(rec) < 100:  # брак
                 video_id = path.split('/')[-1].split('.')[0]
