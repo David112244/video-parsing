@@ -222,6 +222,7 @@ def collect_recommendations():
 
 
 if __name__ == '__main__':
+    multiprocessing.set_start_method("spawn")
     print('Запуск')
     start_time = time()
     collect_recommendations()
