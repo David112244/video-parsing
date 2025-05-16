@@ -214,8 +214,14 @@ def collect_recommendations():
 
         print('near new pool')
         with Pool(processes=2) as pool:
+            result = []
             for item in to_pool:
-                pool.apply_async(inner_function, item)
+                result.append(pool.apply_async(inner_function, item))
+            for res in result:
+                try:
+                    res.get(timeout=30)
+                except Exception as e:
+                    print(f'Error: {e}')
 
         for path in glob(path_to_raw_rec):
             rec = pd.read_csv(path)
