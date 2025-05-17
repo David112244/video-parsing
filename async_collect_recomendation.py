@@ -35,7 +35,7 @@ def parse_recommendations(data: dict) -> list:
                 })
     except KeyError as e:
         print(f"KeyError in JSON structure: {str(e)}")
-    return recommendations[:2]
+    return recommendations[:10]
 
 def extract_yt_initial_data(html: str) -> dict:
     pattern = re.compile(r'var\s+ytInitialData\s*=\s*({.*?});', re.DOTALL)
