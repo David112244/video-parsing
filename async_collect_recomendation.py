@@ -150,7 +150,7 @@ async def collect_recommendations():
         async def worker(pack):
             async with semaphore:
                 await inner_function(pack)
-        to_function = [worker(pack) for pack in to_pool[:1]]
+        to_function = [worker(pack) for pack in to_pool[:10]]
         await asyncio.gather(*to_function)
         break
         for path in glob(path_to_raw_rec):
