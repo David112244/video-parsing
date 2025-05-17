@@ -152,7 +152,6 @@ async def collect_recommendations():
                 await inner_function(pack)
         to_function = [worker(pack) for pack in to_pool[:]]
         await asyncio.gather(*to_function)
-        break
         for path in glob(path_to_raw_rec):
             rec = pd.read_csv(path)
             if len(rec) < 100:
