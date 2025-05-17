@@ -13,6 +13,7 @@ import requests
 import json
 from time import time, sleep
 from multiprocessing import Pool
+import asyncio
 
 
 def extract_video_id(url: str) -> str:
@@ -153,7 +154,8 @@ def get_related_videos_from_request(id, depth=2, count_video=10):
     return recommendations
 
 
-def inner_function(pack):
+async def inner_function(pack):
+    await asyncio.sleep(1)
     print('inner function')
     start_time = time()
     try:
@@ -180,7 +182,7 @@ def inner_function(pack):
         print(e)
 
 
-def collect_recommendations():
+async def collect_recommendations():
     print('collect rec')
     batch_count = 20
     for batch_num in range(batch_count):
@@ -208,25 +210,39 @@ def collect_recommendations():
         unchecked_ids = list(set(video_ids) - set(checked_ids))
         to_pool = [[un_id, batch_num] for un_id in unchecked_ids]
 
-        print('near pool', len(to_pool))
+        # print('near pool', len(to_pool))
         # with Pool(processes=1) as pool:
         #     pool.map(inner_function, to_pool)
 
-        print('near new pool')
-        try:
-            with Pool(processes=2) as pool:
-                print('in pool')
-                result = []
-                for item in to_pool:
-                    print('|', end='')
-                    result.append(pool.apply_async(inner_function, (item, )))
-                for res in result:
-                    try:
-                        res.get(timeout=30)
-                    except Exception as e:
-                        print(f'Error: {e}')
-        except Exception as e:
-            print(e)
+        # print('near new pool')
+        # try:
+        #     with Pool(processes=2) as pool:
+        #         print('in pool')
+        #         result = []
+        #         for item in to_pool:
+        #             print('|', end='')
+        #             result.append(pool.apply_async(inner_function, (item, )))
+        #         for res in result:
+        #             try:
+        #                 res.get(timeout=30)
+        #             except Exception as e:
+        #                 print(f'Error: {e}')
+        # except Exception as e:
+        #     print(e)
+
+
+        #inner_function должная работать оссинхронно
+        count_async = 10
+        semaphore = asyncio.Semaphore(count_async)
+        async def worker(pack):
+            async with semaphore:
+                await inner_function(pack)
+
+        to_function = [worker(pack) for pack in to_pool[:20]]
+        await asyncio.gather(*to_function)
+        break
+
+
 
         for path in glob(path_to_raw_rec):
             print('path')
@@ -239,8 +255,9 @@ def collect_recommendations():
 
 
 if __name__ == '__main__':
-    multiprocessing.set_start_method("spawn")
+    # multiprocessing.set_start_method("spawn")
     print('Запуск')
     start_time = time()
-    collect_recommendations()
+    asyncio.run(collect_recommendations())
     print(f'Код выполнен за {np.round(start_time - time())}')
+
