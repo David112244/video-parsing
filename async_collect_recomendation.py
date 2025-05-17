@@ -145,12 +145,12 @@ async def collect_recommendations():
             checked_ids = pd.Series()
         unchecked_ids = list(set(video_ids) - set(checked_ids))
         to_pool = [[un_id, batch_num] for un_id in unchecked_ids]
-        count_async = 50
+        count_async = 100
         semaphore = asyncio.Semaphore(count_async)
         async def worker(pack):
             async with semaphore:
                 await inner_function(pack)
-        to_function = [worker(pack) for pack in to_pool[:200]]
+        to_function = [worker(pack) for pack in to_pool[:]]
         await asyncio.gather(*to_function)
         break
         for path in glob(path_to_raw_rec):
