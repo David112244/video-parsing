@@ -9,8 +9,8 @@ if __name__ == '__main__': #вызываеть только через конс�
     import aiofiles
 
     print('Запуск')
-    start_time = asyncio.get_event_loop().time()
+    # start_time = asyncio.get_event_loop().time()
     asyncio.run(collect_recommendations())
-    print(f'Код выполнен за {round(asyncio.get_event_loop().time() - start_time, 2)} секунд')
+    # print(f'Код выполнен за {round(asyncio.get_event_loop().time() - start_time, 2)} секунд')
     # put_together()
     # run()
